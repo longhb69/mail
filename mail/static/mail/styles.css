@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 400px;
+}
+.email_container {
+    display: flex;
+    word-wrap:break-word;
+    align-items: center;
+    height: 2.5rem;
+    width: auto;
+    border: 1px solid black;
+}
+
+.sender {
+    font-weight: bold;
+    margin: 0px 10px;
+}
+.subject {
+    margin: 0px 10px;
+    font-weight: 300;
+}
+.timestamp {
+    margin: 0px 0px;
+    color: gray;
+}
+
+.read {
+    background-color: gray;
+}
+.unread {
+    background-color: white;
+}
+.list {
+    list-style-type: none;
+}
+article {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid gray;
+}
