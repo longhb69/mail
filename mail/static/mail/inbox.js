@@ -25,16 +25,22 @@ function compose_email() {
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 }
-function reply_form(sender,subject,timestamp) {
+function reply_form(sender,subject,timestamp, body) {
   compose_email()
-  document.querySelector('#compose-recipients').value = `${sender}`;
-  document.querySelector('#compose-recipients').setAttribute("disabled","")
+  compose_recipients =  document.querySelector('#compose-recipients');
+  compose_subject = document.querySelector('#compose-subject');
+  compose_body = document.querySelector('#compose-body');
+  compose_recipients.value = `${sender}`;
+  //compose_recipients.setAttribute("disabled","");
+  compose_subject.value = subject.startsWith("RE: ") ? `${subject}` : `RE: ${subject}`;
+  compose_body.value = `On ${timestamp} ${sender} wrote: ${body}`
 }
 
 function read_email(id,mailbox) {
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#content-view').style.display = 'block';
+
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
@@ -65,7 +71,7 @@ function read_email(id,mailbox) {
       const btn_reply = document.createElement('button')
       btn_reply.innerHTML = 'Reply'
       btn_reply.addEventListener('click', function() {
-        reply_form(email.sender, email.subject, email.timestamp)
+        reply_form(email.sender, email.subject, email.timestamp, email.body)
       });
       const content_div = document.querySelector('#content-view')
       content_div.append(btn_arc)
@@ -116,12 +122,9 @@ function load_mailbox(mailbox) {
 
 function send_email(event) {
   event.preventDefault();
-
   const recipients  = document.querySelector('#compose-recipients').value;
   const subject = document.querySelector('#compose-subject').value;
   const body = document.querySelector('#compose-body').value;
-
-
   fetch('/emails', {
     method: 'POST', 
     body: JSON.stringify({
